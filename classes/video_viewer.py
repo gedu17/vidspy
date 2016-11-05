@@ -66,7 +66,10 @@ class Video_viewer:
             else:
                 return self.in_range()
         else:
-            return self.full_video()
+            # Doesnt work currently, work around
+            # return self.full_video()
+            self.left_side = 0
+            return self.no_end()
 
     def bad_range(self):
         response = Response('Range Not Satisfiable')
