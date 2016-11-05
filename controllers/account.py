@@ -29,7 +29,7 @@ def users():
     
 @account_blueprint.route("/account/delete/<int:id>", methods=['DELETE'])
 def delete(id):
-    from models import *
+    from models import User, User_setting, Virtual_item, System_message
 
     user = g._db.query(User).filter(User.id == id).first()
 
