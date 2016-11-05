@@ -21,7 +21,7 @@ def generate_virtual_items(item, parent, db, user_id, viewed=0, deleted=0):
             generate_virtual_items(local_item, virtual_item.id, db, user_id, viewed, deleted)
         item['children'].append(local_item)
     
-    if len(item['children']) > 0:
+    if len(item['children']) > 0 and parent != 0:
         item['children'][len(item['children'])-1]['last'] = True
 
 def get_virtual_items(user_id, db, viewed=0, deleted=0):
@@ -54,5 +54,5 @@ def generate_real_items(item, path, parent, db, user_id, folders_only=False):
                 generate_real_items(local_item, path, real_item.id, db, user_id, folders_only)
             item['children'].append(local_item)
     
-    if len(item['children']) > 0:
+    if len(item['children']) > 0 and parent != 0:
         item['children'][len(item['children'])-1]['last'] = True
