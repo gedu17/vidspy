@@ -1,0 +1,139 @@
+html {
+  height: 100%;
+}
+body {
+  padding: 0px;
+  font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
+  height: 100%;
+}
+
+.loginBox {
+  position: absolute !important;
+  left: 50% !important;
+  transform: translate(-50%, 0%) !important;
+}
+
+.contentBox {
+  padding-top: 65px;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  width: 100%;
+}
+
+.noUnderline {
+  text-decoration: none !important;
+}
+
+.iconSmall {
+  font-size: 20px;
+}
+
+.iconXsmall {
+  font-size: 15px;
+}
+
+.popoverIcon {
+  padding: 0px 5px !important;
+}
+
+.myPadding {
+  padding: 3px 0px;
+}
+
+.listingPadding {
+  margin-top: 5px;
+  padding-left: 12px;
+}
+
+.controlsPadding {
+  margin-top: 7px;
+  margin-left: 12px;
+}
+
+.countPadding {
+  position: relative;
+  margin: 0px 7px;
+  top: -1px;
+}
+
+.viewBorderFix {
+  border-bottom: 0px !important;
+}
+
+.marginLeft15px {
+  margin-left: 15px;
+}
+
+.folderPadding {
+  padding: 10px 12px;
+}
+
+.folderPadding2 {
+  padding: 0px 12px;
+}
+
+.verticalMiddle {
+  vertical-align: middle !important;
+}
+
+.alert-myInfo {
+  background-image:-webkit-linear-gradient(top,#d0dede 0,#b9c3c3 100%);
+  background-image:-o-linear-gradient(top,#d0dede 0,#b9c3c3 100%);
+  background-image:-webkit-gradient(linear,left top,left bottom,from(#d0dede),to(#b9c3c3));
+  background-image:linear-gradient(to bottom,#d0dede 0,#b9c3c3 100%);
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffd0dede', endColorstr='#ffb9c3c3', GradientType=0);
+  background-repeat:repeat-x;
+  border-color:#dca7a7;
+}
+
+.messageBadge {
+  margin-left: 5px;
+  top: -4px !important;
+  margin-right: -10px !important;
+}
+
+.messageIcon {
+  margin-left: -10px !important;
+}
+
+.glyphicon-refresh-animate {
+    -animation: spin .7s infinite linear;
+    -webkit-animation: spin2 .7s infinite linear;
+}
+
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
+
+.loadingCenter {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+#contentBox {
+  height: 100%;
+  min-height: 100%;
+}
+
+.systemMessagesPadding {
+  padding-top: 11px;
+}
+
+.userListName {
+  text-align: center;
+  width: 74px;
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
+.mediaWidth {
+  width: 80px;
+}

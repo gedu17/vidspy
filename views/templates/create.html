@@ -1,0 +1,26 @@
+{% macro generate_folders(items, parent_name) %}
+    {% for item in items %}
+        {% if item.id != self_id %}
+            <option value="{{ item.id }}">
+                {{ parent_name }}/{{ item.name }}
+            </option>
+            {{ generate_folders(item.children, parent_name + '/' + item.name) }}
+        {% endif %}
+    {% endfor %}    
+{% endmacro %}
+
+<form>
+    <fieldset class="form-group">
+    	<label for="foldername">Folder Name</label>
+        <input type="text" class="form-control" id="foldername" />
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="parentfolder">Parent Folder</label>
+        <select class="form-control" id="parentfolder">
+            <option value="0" selected="selected">
+                --No Parent--
+            </option>
+            {{ generate_folders(items, '') }}
+        </select>
+    </fieldset>
+</form>

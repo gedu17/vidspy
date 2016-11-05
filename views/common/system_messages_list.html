@@ -1,0 +1,57 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="pull-left systemMessagesPadding">
+            System messages 
+        </div>
+        <div class="pull-left listingPadding">
+            <span class="pull-xs-left">
+                <select id="listingType" name="listingType" class="form-control " onchange="changeSystemMessages();">
+                    <option value="0" {% if listing_type == 1 -%} selected="selected" {%- endif %}>Important</option>
+                    <option value="1" {% if listing_type == 2 -%} selected="selected" {%- endif %}>All</option>
+                </select>
+            </span>
+        </div>
+        <div class="pull-left controlsPadding">
+            <button type="button" class="btn btn-link" onclick="cleanMessages();">
+                <i class="glyphicon glyphicon-trash iconXsmall"></i>
+            </button>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+
+    {% if count > 0 %}
+        <table class="table table-bordered table-condensed" id="systemMessagesTable">
+            <thead>
+                <th class="text-center">#</th>
+                <th class="text-left">Message</th>
+                <th class="text-center">Time</th>
+                <th class="text-center">Delete</th>
+            </thead>
+            <tbody>
+                {% for message in messages %}
+                    <tr class="{{ severities[message.severity] }}" id="{{ message.id }}_tr">
+                        <td class="text-center verticalMiddle"><strong>{{ loop.index }}</strong></td>
+                        <td class="text-left col-md-8 verticalMiddle">
+                                <a href="#" class="btn btn-link" {% if message.long_message|length > 0 -%} onclick="openMessage({{ message.id }});" {%- endif %}>
+                                    {% if message.read == 0 -%} <i class="glyphicon glyphicon-exclamation-sign" id="{{ message.id }}_icon"></i> {%- endif %}
+                                    {{ message.message }}</a>
+                        </td>
+                        <td class="text-center verticalMiddle">{{ date_converter(message.timestamp) }}</td>
+                        <td class="text-center verticalMiddle">
+                            <a href="#" onclick="deleteMessage({{ message.id }});">
+                                <span aria-hidden="true" class="glyphicon-remove-circle glyphicon"></span>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                
+            </tbody>
+        </table>
+    {% else %}
+        <div class="panel-body">
+            <div class="alert alert-info">No system messages.</div>
+        </div>
+    {% endif %}
+    
+</div>

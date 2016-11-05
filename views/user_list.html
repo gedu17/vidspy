@@ -1,0 +1,24 @@
+{% extends 'common/layout.html' %}
+{% block body %}
+<div class="container-fluid col-md-4 loginBox">
+    <div class="panel panel-default">
+        <div class="panel-heading">Welcome</div>
+        <div class="panel-body">
+            {% for user in users %}
+                <div class="media center-block mediaWidth">
+                    
+                        <div class="media-left media-middle">
+                            <a href="#" onclick="logIn({{ user.id }})" class="noUnderline">
+                                <img class="media-object avatar img-thumbnail" src='/public/images/avatar.png' alt='64x64' />
+                            </a>
+                        </div>
+                        <h4 class="userListName">
+                            <a href="#" onclick="logIn({{ user.id }})" class="noUnderline">{{ user.name }}</a>
+                        </h4>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

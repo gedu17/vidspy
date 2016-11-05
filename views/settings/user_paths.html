@@ -1,0 +1,36 @@
+{% macro print_children(item, level) %}
+    {% for child in item.children %}
+        {% set id = uuid() %}
+        <div id="{{ id }}_div" class="list-group-item" style="padding-left: {{ level * 10 }}px;">
+            <input type="checkbox" name="{{ child.path }}{{ dir_separator }}" value="{{ child.path }}{{ dir_separator }}" 
+                {% if child.path+dir_separator in selected_folders -%} checked="checked" {%- endif %} /> 
+                {% if child.children|length > 0 %}
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#{{ id }}_content" type="button">
+                            <span class="glyphicon glyphicon-folder-open" aria-hidden="true">
+                                <span id="{{ id }}_name">{{ base_name(child.path) }}</span>
+                            </span>
+                        </button>
+                {% else %}
+                    <span class="glyphicon glyphicon-folder-close btn btn-link noUnderline folderPadding" aria-hidden="true">
+                        <span id="{{ id }}_name">{{ base_name(child.path) }}</span>
+                    </span>
+                {% endif %}
+        </div>
+        <div class="collapse" id="{{ id }}_content">
+            {% if child.type == 0 %}
+                {{ print_children(child, level+1) }}
+            {% endif %}
+        </div>
+        
+    {% endfor %}
+{% endmacro %}
+<div class="alert alert-danger hide" role="alert" id="userPathsError"></div>
+<div class="alert alert-success hide" role="alert" id="userPathsSuccess"></div>
+<div class="list-group">
+    <form id="userPathsForm">
+    {% for folder in folders %}
+        {{ print_children(folder, 1) }}
+    {% endfor %}
+    </form> 
+</div>
+<button class="btn btn-primary" type="button" onclick="updateUserPaths();">Update</button>

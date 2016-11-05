@@ -1,0 +1,79 @@
+<div class="alert alert-danger hide" role="alert" id="manageUsersError"></div>
+<div class="alert alert-success hide" role="alert" id="manageUsersSuccess"></div>
+<table class="table table-striped table-bordered table-condensed" id="manageUsersTable">
+    <thead>
+        <th class="text-center verticalMiddle">#</th>
+        <th class="text-center verticalMiddle">Name</th>
+        <th class="text-center verticalMiddle">Active</th>
+        <th class="text-center verticalMiddle">Admin</th>
+        <th class="text-center verticalMiddle">Delete</th>
+    </thead>
+    <tbody>
+        {% for this_user in users %}
+            <tr>
+                <td class="text-center verticalMiddle"><strong>{{ loop.index }}</strong></td>
+                <td class="text-center verticalMiddle">{{ this_user.name }}</td>
+                <td class="text-center verticalMiddle">
+                    {% set activeLink = "onclick=\"setActive(" + this_user.id|string + ", 1)\"" %}
+                    {% set inactiveLink = "onclick=\"setActive(" + this_user.id|string +", 0)\"" %}
+                    {% set active = "" %}
+                    {% set inactive = "" %}
+                    {% if this_user.id == user.id %}
+                        {% set inactive = "hide" %}
+                        {% set inactiveLink = "" %}
+                    {% elif this_user.active == 1 %}
+                        {% set inactive = "hide" %}
+                    {% else %}
+                        {% set active = "hide" %}
+                    {% endif %}
+
+                        <div id="{{ this_user.id }}_active" class="{{ active }}">
+                        <a href="#" {{ inactiveLink }}>
+                            <span aria-hidden="true" class="glyphicon-ok glyphicon"></span>
+                        </a>
+                        </div>
+                        <div id="{{ this_user.id }}_inactive" class="{{ inactive }}">
+                            <a href="#" {{ activeLink }}>
+                                <span aria-hidden="true" class="glyphicon-remove glyphicon"></span>
+                            </a>
+                        </div>
+                </td>
+                <td class="text-center verticalMiddle">
+                        {% set adminLink = "onclick=\"setAdmin(" + this_user.id|string + ", 1)\"" %}
+                        {% set notadminLink = "onclick=\"setAdmin(" + this_user.id|string + ", 0)\"" %}
+                        {% set admin = "" %}
+                        {% set notadmin = "" %}
+                        {% if this_user.id == user.id %}
+                        
+                            {% set notadmin = "hide" %}
+                            {% set notadminLink = "" %}
+                        {% elif this_user.level >= 9 %}
+                            {% set notadmin = "hide" %}
+                        {% else %}
+                            {% set admin = "hide" %}
+                        {% endif %}
+                    <div id="{{ this_user.id }}_admin" class=" {{ admin }}">
+                        <a href="#" {{ notadminLink }}>
+                            <span aria-hidden="true" class="glyphicon-ok glyphicon"></span>
+                        </a>
+                    </div>
+                    <div id="{{ this_user.id }}_notadmin" class="{{ notadmin }}">
+                        <a href="#" {{ adminLink }}>
+                            <span aria-hidden="true" class="glyphicon-remove glyphicon"></span>
+                        </a>
+                    </div>
+                </td>
+                <td class="text-center verticalMiddle">
+                    {% if this_user.id != user.id %}
+                    <a href="#" data-toggle="modal" data-target="#popup" onclick="deleteUser({{ this_user.id }}, '{{ this_user.name }}');">
+                        <span aria-hidden="true" class="glyphicon-remove-circle glyphicon"></span>
+                    </a>
+                    {% else %}
+                        <span aria-hidden="true" class="glyphicon-remove-circle glyphicon btn-link noUnderline"></span>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        
+    </tbody>
+</table>

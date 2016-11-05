@@ -1,0 +1,102 @@
+{% macro print_item(items, level, parent, cond) %}
+    {% set padding = level * 10 %}
+    {% for item in items %}
+            {% if item['type'] == 0 %}
+                <div id="{{ item['id'] }}_div" class="list-group-item {% if item['last'] == 1 -%} viewBorderFix {%- endif %}" style="padding-left: {{ padding }}px;">
+                    {% if item['children_count'] > 0 %}
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#{{ item['id'] }}_content" type="button">
+                        <span class="glyphicon glyphicon-folder-open" aria-hidden="true">
+                            <span  id="{{ item['id'] }}_name">{{ item['name'] }}</span>
+                        </span>
+                    </button>
+                    {% else %}
+                    <span class="glyphicon glyphicon-folder-close btn-link btn noUnderline"  aria-hidden="true">
+                        <span  id="{{ item['id'] }}_name">{{ item['name'] }}</span>
+                    </span>
+                    {% endif %}
+                    <span class="label label-default label-pill pull-xs-right" id="{{ item['id'] }}_count">{{ item['children_count'] }}</span> 
+                    <button class="btn btn-link" data-toggle="popover" data-placement="top" data-content="{{ generate_buttons(item, parent) }}" id="viewItem_{{ item['id'] }}"
+                        type="button" tabindex="{{ item['id'] }}">
+                        <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div id="{{ item['id'] }}_content" class="collapse">
+                    {% if cond == True %}
+                        {{ print_item(item['children'], level+1, item['id'], cond) }}
+                    {% endif %}
+                </div>
+            {% else %}
+                <div id="{{ item['id'] }}_div" class="list-group-item {% if item['last'] == 1 -%} viewBorderFix {%- endif %}" style="padding-left: {{ padding }}px;">
+                    <span class="glyphicon glyphicon-film" aria-hidden="true" style="padding-left: 15px;">
+                        <a href="/item/view/{{ item['id'] }}/{{ item['name'] }}{{ item['extension'] }}"><span id="{{ item['id'] }}_name">{{ item['name'] }}</span></a>
+                    </span>
+                    
+                    <button class="btn btn-link" data-toggle="popover" data-placement="top" data-content="{{ generate_buttons(item, parent) }}" id="viewItem_{{ item['id'] }}"
+                        type="button" tabindex="{{ item['id'] }}">
+                        <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+                    </button>
+                </div>
+            {% endif %}
+    {% endfor %}
+
+{% endmacro %}
+
+{% macro generate_buttons(item, parent_id) %}
+    {% if item['is_viewed'] == 1 %}
+        <button class='btn btn-link popoverIcon' onclick='unviewedItem({{ item['id'] }}, {{ parent_id }})'>
+            <span class='glyphicon glyphicon-eye-close iconSmall' aria-hidden='true'></span>
+        </button>
+    {% elif item['is_deleted'] == 1 %}
+        <button class='btn btn-link popoverIcon' onclick='undeleteItem({{ item['id'] }}, {{ parent_id }})'>
+            <span class='glyphicon glyphicon-ok iconSmall' aria-hidden='true'></span>
+        </button>
+    {% else %}
+        <button class='btn btn-link popoverIcon' onclick='viewedItem({{ item['id'] }}, {{ parent_id }})'>
+            <span class='glyphicon glyphicon-eye-open iconSmall' aria-hidden='true'></span>
+        </button>
+        <button class='btn btn-link popoverIcon' onclick='editItem({{ item['id'] }})'>
+            <span class='glyphicon glyphicon-pencil iconSmall' aria-hidden='true'></span>
+        </button>
+        <button class='btn btn-link popoverIcon' onclick='deleteItem({{ item['id'] }}, {{ parent_id }})'>
+            <span class='glyphicon glyphicon-remove iconSmall' aria-hidden='true'></span>
+        </button>
+        <button class='btn btn-link popoverIcon' onclick='moveItem({{ item['id'] }})'>
+            <span class='glyphicon glyphicon-move iconSmall' aria-hidden='true'></span>
+        </button>
+    {% endif %}
+    
+{% endmacro %}
+
+{% macro print_real_item(items, level, parent) %}
+    {% set padding = level * 10 %}
+    {% for item in items %}
+            {% if item['type'] == 0 %}
+                <div id="{{ item['id'] }}_div" class="list-group-item {% if item['last'] == 1 -%} viewBorderFix {%- endif %}" style="padding-left: {{ padding }}px;">
+                    {% if item['children_count'] > 0 %}
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#{{ item['id'] }}_content" type="button">
+                        <span class="glyphicon glyphicon-folder-open" aria-hidden="true">
+                            <span  id="{{ item['id'] }}_name">{{ item['name'] }}</span>
+                        </span>
+                    </button>
+                    {% else %}
+                    <span class="glyphicon glyphicon-folder-close btn-link btn noUnderline"  aria-hidden="true">
+                        <span  id="{{ item['id'] }}_name">{{ item['name'] }}</span>
+                    </span>
+                    {% endif %}
+                    <span class="label label-default label-pill pull-xs-right" id="{{ item['id'] }}_count">{{ item['children_count'] }}</span> 
+                </div>
+                <div id="{{ item['id'] }}_content" class="collapse">
+                    {{ print_real_item(item['children'], level+1, item['id']) }}
+                </div>
+            {% else %}
+                <div id="{{ item['id'] }}_div" class="list-group-item {% if item['last'] == 1 -%} viewBorderFix {%- endif %}" style="padding-left: {{ padding }}px;">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#{{ item['id'] }}_content" type="button">
+                        <span class="glyphicon glyphicon-film" aria-hidden="true">
+                            <a href="#"><span id="{{ item['id'] }}_name">{{ item['name'] }}</span></a>
+                        </span>
+                    </button>
+                </div>
+            {% endif %}
+    {% endfor %}
+
+{% endmacro %}

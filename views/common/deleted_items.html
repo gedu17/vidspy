@@ -1,0 +1,27 @@
+{% from "macros.html" import print_item %}
+<div class="list-group">
+    <div class="list-group-item" style="background: #D8D8D8">
+        <div class="pull-left myPadding">
+            <h5 aria-hidden="true" class="glyphicon-folder-close glyphicon" id="0_name"></h5>
+            <span class="pull-s-right label-pill label-default label countPadding" id="parentCount">{{ count }}</span>
+        </div>
+        <div class="pull-left listingPadding">
+            <span class="pull-xs-left">
+                <select id="listingType" name="listingType" class="form-control " onchange="changeVirtualView();">
+                    <option value="0">Default</option>
+                    <option value="1">Viewed</option>
+                    <option value="2" selected="selected">Deleted</option>
+                </select>
+            </span>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    {% if count > 0 %}
+        {{  print_item(item, 0, 0, False)  }}
+    {% else %}
+        <div class="panel-body">
+            <div class="alert alert-info">No items.</div>
+        </div>
+    {% endif %}
+</div>
+

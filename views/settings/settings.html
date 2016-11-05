@@ -1,0 +1,46 @@
+{% extends "common/layout.html" %}
+{% block body %}
+<div class="panel panel-default">
+    <div class="panel-heading">Settings</div>
+    <div class="panel-body">
+        <ul class="nav nav-tabs" id="settingsTabs">
+            <li role="presentation" class="active">
+                <a href="#passwordChange" aria-controls="passwordChange" role="tab" data-toggle="tab">Password change</a>
+            </li>
+            <li role="presentation">
+                <a href="#userPaths" aria-controls="userPaths" role="tab" data-toggle="tab">User paths</a>
+            </li>
+            {% if user.is_admin %}
+                <li role="presentation">
+                    <a href="#adminSettings" aria-controls="adminSettings" role="tab" data-toggle="tab">Admin settings</a>
+                </li>
+                <li role="presentation">
+                    <a href="#createUser" aria-controls="createUser" role="tab" data-toggle="tab">Create user</a>
+                </li>
+                <li role="presentation">
+                    <a href="#manageUsers" aria-controls="manageUsers" role="tab" data-toggle="tab">Manage users</a>
+                </li>
+            {% endif %}
+        </ul>
+        <div class="tab-content" id="settingsContent">
+            <div role="tabpanel" class="tab-pane active" id="passwordChange" style="padding-top: 15px;">
+                {% include 'settings/password_change.html' ignore missing %}
+            </div>
+            <div role="tabpanel" class="tab-pane" id="userPaths" style="padding-top: 15px;">
+                {% include 'settings/user_paths.html' ignore missing %}
+            </div>
+            {% if user.is_admin %}
+                <div role="tabpanel" class="tab-pane" id="adminSettings" style="padding-top: 15px;">
+                    {% include 'settings/admin_settings.html' ignore missing %}
+                </div>
+                <div role="tabpanel" class="tab-pane" id="createUser" style="padding-top: 15px;">
+                    {% include 'settings/create_user.html' %}
+                </div>
+                <div role="tabpanel" class="tab-pane" id="manageUsers" style="padding-top: 15px;">
+                    {% include 'settings/manage_users.html' ignore missing %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

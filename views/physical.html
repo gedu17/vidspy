@@ -1,0 +1,30 @@
+{% extends 'common/layout.html' %}
+{% block body %}
+{% from "macros.html" import print_real_item %}
+<ul class="nav nav-tabs" id="settingsTabs">
+    {% for path in paths %}
+        <li role="presentation" {% if loop.index == 1 -%} class="active" {%- endif %}>
+            <a href="#path_{{ path['id'] }}" aria-controls="path_{{ path['id'] }}" role="tab" data-toggle="tab">
+                {{ path['value'] }} <span class="pull-xs-right label-pill label-default label">{{ path['count'] }} </span>
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+<div class="tab-content" id="physicalContent">
+    {% if paths|length > 0 %}
+        {% for path in paths %}
+            <div role="tabpanel" class="tab-pane {% if loop.index == 1 -%} active {%- endif %}" id="path_{{ path['id'] }}" style="padding-top: 15px;">
+                <div class="list-group">
+                    {{ print_real_item(item, 0, 0) }}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div role="tabpanel" class="tab-pane active" style="padding-top: 15px;">
+             <div class="panel-body">
+            <div class="alert alert-info">No items.</div>
+        </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

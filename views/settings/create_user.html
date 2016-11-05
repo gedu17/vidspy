@@ -1,0 +1,24 @@
+<div class="alert alert-danger hide" role="alert" id="createUserError"></div>
+<div class="alert alert-success hide" role="alert" id="createUserSuccess"></div>
+<form id="createUserForm">
+    <fieldset class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" />
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" />
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="passwordRepeat">Repeat password</label>
+        <input type="password" class="form-control" id="passwordRepeat" />
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="level">Level</label>
+        <select id="level" class="form-control">
+            <option value="1">User</option>
+            <option value="9">Admin</option>
+        </select>
+    </fieldset>
+    <button class="btn btn-primary" type="button" id="createUserButton" onclick="createUser();">Create</button>
+</form>
