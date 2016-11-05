@@ -31,7 +31,7 @@ def init():
 	g._user = user
 	g._request = request
 
-	if user.logged_in is not True and request.path[0:8] != '/public/':
+	if user.logged_in is not True and  not (request.path[0:8] == '/public/' or request.path[0:11] == '/item/view/'):
 		return login()
 	
 
@@ -65,9 +65,6 @@ def send_static(path):
 	return send_from_directory('public', path)
 
 
-
-
-#TODO: remove when running from wsgi
 if __name__ == "__main__":
 	app.run()
 
