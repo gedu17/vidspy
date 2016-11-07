@@ -6,20 +6,20 @@ item_blueprint = Blueprint('item_blueprint', __name__)
 @item_blueprint.route('/item/move/<int:id>', methods=['PUT'])
 def move(id):
     from models import Virtual_item
-
-    new_parent = int(g._request.json['parent_id'])
-    item = g._db.query(Virtual_item).filter(Virtual_item.id == id).filter(Virtual_item.user_id == g._user.id).first()
-    if item is not None:
-        item.parent_id = new_parent
-        g._db.commit()
-        #TODO: system_message here !
-        return 'OK'
+    if 'parent_id' in g._request.json:
+        new_parent = int(g._request.json['parent_id'])
+        item = g._db.query(Virtual_item).filter(Virtual_item.id == id).filter(Virtual_item.user_id == g._user.id).first()
+        if item is not None:
+            item.parent_id = new_parent
+            g._db.commit()
+            #TODO: system_message here !
+            return 'OK'
     return 'Bad Request', 400
     
 @item_blueprint.route('/item/edit/<int:id>', methods=['PUT'])
 def edit(id):
     from models import Virtual_item
-
+    #TODO: DO CHECKS for items in lists everywhere
     new_name = g._request.json['name']
     item = g._db.query(Virtual_item).filter(Virtual_item.id == id).filter(Virtual_item.user_id == g._user.id).first()
     if item is not None:

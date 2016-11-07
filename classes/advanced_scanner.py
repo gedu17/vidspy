@@ -48,7 +48,8 @@ class Advanced_scanner:
                     if not self.is_in_list(old_items[i].children, new_item2.path):
                         action(new_item2)
                     elif new_item2.type is file_type['Folder']:
-                        self.find_difference(old_items[i].children[j].children, new_item2.children, action)
+                        if len(old_items) >= i and len(old_items[i].children) >= j:
+                            self.find_difference(old_items[i].children[j].children, new_item2.children, action)
 
     def is_in_list(self, items, path):
         found = False

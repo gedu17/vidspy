@@ -64,6 +64,18 @@ def logout():
 def send_static(path):
 	return send_from_directory('public', path)
 
+@app.route("/test")
+def testas():
+    from flask import Response
+
+    resp_text = 'cia yra mano testas'
+    response = Response('OK')
+    response.status_code = 200
+    response.content_length = len(resp_text)
+    response.content_type = 'text/html'
+    response.data = bytearray(resp_text)
+
+    return response
 
 if __name__ == "__main__":
 	app.run()

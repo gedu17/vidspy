@@ -13,10 +13,17 @@ def generate_virtual_items(item, parent, db, user_id, viewed=0, deleted=0):
         .filter(Virtual_item.is_viewed == viewed).filter(Virtual_item.is_deleted == deleted).order_by(Virtual_item.type).order_by(Virtual_item.name).all()
     
     for virtual_item in virtual_items:
+        real_id = 0
+        real_path = ''
+        real_extension = ''
+        if virtual_item.real_item is not None:
+            real_id = virtual_item.real_item.id
+            real_path = virtual_item.real_item.path
+            real_extension = virtual_item.real_item.extension
         child_count = db.query(Virtual_item).filter(Virtual_item.user_id == user_id).filter(Virtual_item.parent_id == virtual_item.id).count()
-        local_item = {'name': virtual_item.name, 'children': [], 'id': virtual_item.real_item.id, 'last': False, 'type': virtual_item.type, 
+        local_item = {'name': virtual_item.name, 'children': [], 'id': real_id, 'last': False, 'type': virtual_item.type, 
             'is_viewed': virtual_item.is_viewed, 'is_deleted': virtual_item.is_deleted, 'children_count': child_count, 
-            'extension': virtual_item.real_item.extension }
+            'extension': real_extension, 'path': real_path }
         if virtual_item.type == file_type['Folder']:
             generate_virtual_items(local_item, virtual_item.id, db, user_id, viewed, deleted)
         item['children'].append(local_item)

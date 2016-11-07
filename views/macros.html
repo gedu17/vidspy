@@ -28,7 +28,7 @@
             {% else %}
                 <div id="{{ item['id'] }}_div" class="list-group-item {% if item['last'] == 1 -%} viewBorderFix {%- endif %}" style="padding-left: {{ padding }}px;">
                     <span class="glyphicon glyphicon-film" aria-hidden="true" style="padding-left: 15px;">
-                        <a href="/item/view/{{ item['id'] }}/{{ item['name'] }}{{ item['extension'] }}"><span id="{{ item['id'] }}_name">{{ item['name'] }}</span></a>
+                        <a href="/item/view/{{ item['path'] }}"><span id="{{ item['id'] }}_name">{{ item['name'] }}</span></a>
                     </span>
                     
                     <button class="btn btn-link" data-toggle="popover" data-placement="top" data-content="{{ generate_buttons(item, parent) }}" id="viewItem_{{ item['id'] }}"
