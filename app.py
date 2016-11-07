@@ -2,6 +2,7 @@ from flask import Flask, session, request, send_from_directory, render_template,
 from flask_sqlalchemy import SQLAlchemy
 from jinja2 import Environment, PackageLoader
 from controllers import *
+from werkzeug.contrib.profiler import ProfilerMiddleware
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://vidspy:vidspy@localhost/vidspy'
@@ -15,6 +16,9 @@ app.register_blueprint(item_blueprint)
 app.register_blueprint(items_blueprint)
 app.register_blueprint(template_blueprint)
 app.register_blueprint(system_messages_blueprint)
+
+app.config['PROFILE'] = True
+app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
 
 # Globals
 db = SQLAlchemy(app)
@@ -31,7 +35,7 @@ def init():
 	g._user = user
 	g._request = request
 
-	if user.logged_in is not True and  not (request.path[0:8] == '/public/' or request.path[0:11] == '/item/view/'):
+	if user.logged_in is not True and not (request.path[0:8] == '/public/' or request.path[0:11] == '/item/view/'):
 		return login()
 	
 
@@ -66,5 +70,4 @@ def send_static(path):
 
 
 if __name__ == "__main__":
-	app.run()
-
+	app.run(debug=True)
