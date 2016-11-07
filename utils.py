@@ -22,7 +22,7 @@ def generate_virtual_items(item, parent, db, user_id, viewed, deleted, folders_o
                 real_path = virtual_item.real_item.path
                 real_extension = virtual_item.real_item.extension
             child_count = db.query(Virtual_item).filter(Virtual_item.user_id == user_id).filter(Virtual_item.parent_id == virtual_item.id) \
-                filter(Virtual_item.is_viewed == viewed).filter(Virtual_item.is_deleted == deleted).count()
+                .filter(Virtual_item.is_viewed == viewed).filter(Virtual_item.is_deleted == deleted).count()
             local_item = {'name': virtual_item.name, 'children': [], 'id': virtual_item.id, 'real_id': real_id, 'last': False, 'type': virtual_item.type, 
                 'is_viewed': virtual_item.is_viewed, 'is_deleted': virtual_item.is_deleted, 'children_count': child_count, 
                 'extension': real_extension, 'path': real_path }
