@@ -7,10 +7,14 @@ def move(id):
     from models import Virtual_item
     from utils import get_virtual_items
     template = g._env.get_template('templates/move.html')
-    item = get_virtual_items(g._user.id, g._db, True)
+    item = get_virtual_items(g._user.id, g._db, 0, 0, True)
+    
     virtual_item = g._db.query(Virtual_item).filter(Virtual_item.id == id).first()
+    if virtual_item is not None:
+        return template.render(items=item['children'], current_parent=virtual_item.parent_id, self_id=virtual_item.id)
+    
+    return 'Bad Request', 400
 
-    return template.render(items=item['children'], current_parent=virtual_item.parent_id, self_id=virtual_item.id)
 
 @template_blueprint.route('/template/edit/<int:id>', methods=['GET'])
 def edit(id):
@@ -25,7 +29,7 @@ def edit(id):
 def create():
     from utils import get_virtual_items
     template = g._env.get_template('templates/create.html')
-    item = get_virtual_items(g._user.id, g._db, True)
+    item = get_virtual_items(g._user.id, g._db, 0, 0, True)
 
     return template.render(items=item['children'])
 

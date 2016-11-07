@@ -14,7 +14,7 @@ class Base_scanner:
         items = []
         for id, dir in dirs.iteritems():
             base_dir = Scan_item(dir, id, 0, 0)
-            self.__scan_dir(dir, id, base_dir)
+            self.__scan_dir(dir, id, base_dir, True)
             items.append(base_dir)
         return self.sort(items)
 
@@ -24,14 +24,15 @@ class Base_scanner:
         
         return False
     
-    def __scan_dir(self, dir_to_scan, dir_id, parent):
+    def __scan_dir(self, dir_to_scan, dir_id, parent, base_dir=False):
         for item in os.listdir(dir_to_scan):
             if not self.is_hidden(item):
                 sep = os.sep if dir_to_scan[-1:] != os.sep else ''
                 fullpath = dir_to_scan + sep + item
+                parent_dir = dir_to_scan if not base_dir else None
 
                 if os.path.isdir(fullpath):
-                    dir_item = Scan_item(fullpath, dir_id, file_type['Folder'], 1)
+                    dir_item = Scan_item(fullpath, dir_id, file_type['Folder'], 1, parent_dir)
                     parent.children.append(dir_item)
                     self.__scan_dir(fullpath, dir_id, dir_item)
                     
@@ -39,7 +40,7 @@ class Base_scanner:
                     ext = os.path.splitext(fullpath)[1]
                     for condition in self.scan_conditions:
                         if condition.check_condition(ext):
-                            file_item = Scan_item(fullpath, dir_id, condition.type, int(condition.writeable))
+                            file_item = Scan_item(fullpath, dir_id, condition.type, int(condition.writeable), parent_dir)
                             parent.children.append(file_item)
                             break
 

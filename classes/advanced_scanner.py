@@ -41,13 +41,13 @@ class Advanced_scanner:
 
     def find_difference(self, old_items, new_items, action):
         for i, new_item in enumerate(new_items):
-            if len(old_items) < i+1:
+            if not self.is_in_list(old_items, new_item.path):
                 action(new_item)
             else:
                 for j, new_item2 in enumerate(new_item.children):
                     if not self.is_in_list(old_items[i].children, new_item2.path):
                         action(new_item2)
-                    elif new_item2.type is file_type['Folder']:
+                    if new_item2.type is file_type['Folder']:
                         if len(old_items) >= i and len(old_items[i].children) >= j:
                             self.find_difference(old_items[i].children[j].children, new_item2.children, action)
 
@@ -57,15 +57,36 @@ class Advanced_scanner:
             if item.path == path:
                 found = True
                 break
+        
+        return found   
 
-        return found                
+    def get_real_item_id(self, path, user_path_id):
+        from models import Real_item
+
+        real_item = self.db.query(Real_item).filter(Real_item.path == path).filter(Real_item.user_path_id == user_path_id).first()
+        if real_item is not None:
+            return real_item.id
+        raise "Real item with path %s and user path id %d does not exist" % (path, user_path_id)
+
+    def get_virtual_item_id(self, id):
+        from models import Virtual_item
+        virtual_item = self.db.query(Virtual_item).filter(Virtual_item.real_item_id == id).filter(Virtual_item.user_id == self.user.id).first()
+        if virtual_item is not None:
+            return virtual_item.id
+        raise "Virtual item with real item id %d and user id %d does not exist" % (id, self.user.id)
 
     def add_items(self, item, real_parent_id, virtual_parent_id):
-        if real_parent_id is 0:
+        if real_parent_id is 0 and item.parent is None:
             real_parent_id = self.add_real_item(real_parent_id, item)
             if item.write_virtual_item:
                 virtual_parent_id = self.add_virtual_item(real_parent_id, virtual_parent_id, item)
-        
+        else:
+            rp_id = self.get_real_item_id(item.parent, item.user_path_id)
+            vp_id = self.get_virtual_item_id(rp_id)
+            real_parent_id = self.add_real_item(rp_id, item)
+            if item.write_virtual_item:
+                virtual_parent_id = self.add_virtual_item(real_parent_id, vp_id, item)
+
         for child in item.children:
             real_item = self.add_real_item(real_parent_id, child)
             virtual_item = 0
