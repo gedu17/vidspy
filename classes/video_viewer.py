@@ -22,7 +22,7 @@ class Video_viewer:
         
         if item is not None:
             user_setting = self.db.query(User_setting).filter(User_setting.id == item.user_path_id).first()
-            if user_setting is not None and user_setting.user_id == self.user_id:
+            if user_setting is not None:
                 self.item = item
                 return True
         return False
