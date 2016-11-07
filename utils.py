@@ -13,32 +13,22 @@ def generate_virtual_items(item, parent, db, user_id, viewed, deleted, folders_o
         .filter(Virtual_item.is_viewed == viewed).filter(Virtual_item.is_deleted == deleted).order_by(Virtual_item.type).order_by(Virtual_item.name).all()
     
     for virtual_item in virtual_items:
-<<<<<<< HEAD
-        real_id = 0
-        real_path = ''
-        real_extension = ''
-        if virtual_item.real_item is not None:
-            real_id = virtual_item.real_item.id
-            real_path = virtual_item.real_item.path
-            real_extension = virtual_item.real_item.extension
-        child_count = db.query(Virtual_item).filter(Virtual_item.user_id == user_id).filter(Virtual_item.parent_id == virtual_item.id).count()
-        local_item = {'name': virtual_item.name, 'children': [], 'id': real_id, 'last': False, 'type': virtual_item.type, 
-            'is_viewed': virtual_item.is_viewed, 'is_deleted': virtual_item.is_deleted, 'children_count': child_count, 
-            'extension': real_extension, 'path': real_path }
-        if virtual_item.type == file_type['Folder']:
-            generate_virtual_items(local_item, virtual_item.id, db, user_id, viewed, deleted)
-        item['children'].append(local_item)
-=======
         if not folders_only or (folders_only and virtual_item.type == file_type['Folder']):
+            real_id = 0
+            real_path = ''
+            real_extension = ''
+            if virtual_item.real_item is not None:
+                real_id = virtual_item.real_item.id
+                real_path = virtual_item.real_item.path
+                real_extension = virtual_item.real_item.extension
             child_count = db.query(Virtual_item).filter(Virtual_item.user_id == user_id).filter(Virtual_item.parent_id == virtual_item.id) \
-                .filter(Virtual_item.is_viewed == viewed).filter(Virtual_item.is_deleted == deleted).count()
-            local_item = {'name': virtual_item.name, 'children': [], 'id': virtual_item.id, 'reaL_id': virtual_item.real_item.id, 'last': False, 
-                'type': virtual_item.type, 'is_viewed': virtual_item.is_viewed, 'is_deleted': virtual_item.is_deleted, 'children_count': child_count, 
-                'extension': virtual_item.real_item.extension }
+                filter(Virtual_item.is_viewed == viewed).filter(Virtual_item.is_deleted == deleted).count()
+            local_item = {'name': virtual_item.name, 'children': [], 'id': virtual_item.id, 'real_id': real_id, 'last': False, 'type': virtual_item.type, 
+                'is_viewed': virtual_item.is_viewed, 'is_deleted': virtual_item.is_deleted, 'children_count': child_count, 
+                'extension': real_extension, 'path': real_path }
             if virtual_item.type == file_type['Folder']:
                 generate_virtual_items(local_item, virtual_item.id, db, user_id, viewed, deleted, folders_only)
             item['children'].append(local_item)
->>>>>>> 4a4d946db7d06272179f735b4311e3a4c85e0ebf
     
     if len(item['children']) > 0 and parent != 0:
         item['children'][len(item['children'])-1]['last'] = True
