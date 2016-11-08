@@ -16,6 +16,7 @@ app.register_blueprint(item_blueprint)
 app.register_blueprint(items_blueprint)
 app.register_blueprint(template_blueprint)
 app.register_blueprint(system_messages_blueprint)
+app.register_blueprint(real_item_blueprint)
 
 app.config['PROFILE'] = True
 app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])

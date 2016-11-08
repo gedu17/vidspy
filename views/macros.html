@@ -57,11 +57,11 @@
         <button class='btn btn-link popoverIcon' onclick='editItem({{ item['id'] }})'>
             <span class='glyphicon glyphicon-pencil iconSmall' aria-hidden='true'></span>
         </button>
-        <button class='btn btn-link popoverIcon' onclick='deleteItem({{ item['id'] }}, {{ parent_id }})'>
-            <span class='glyphicon glyphicon-remove iconSmall' aria-hidden='true'></span>
-        </button>
         <button class='btn btn-link popoverIcon' onclick='moveItem({{ item['id'] }})'>
             <span class='glyphicon glyphicon-move iconSmall' aria-hidden='true'></span>
+        </button>
+        <button class='btn btn-link popoverIcon' onclick='deleteItem({{ item['id'] }}, {{ parent_id }})'>
+            <span class='glyphicon glyphicon-remove iconSmall' aria-hidden='true'></span>
         </button>
     {% endif %}
     
@@ -84,6 +84,9 @@
                     </span>
                     {% endif %}
                     <span class="label label-default label-pill pull-xs-right" id="{{ item['id'] }}_count">{{ item['children_count'] }}</span> 
+                    <button class='btn btn-link popoverIcon' onclick='deleteRealItem({{ item['id'] }}, {{ parent }})'>
+                        <span class='glyphicon glyphicon-remove iconSmall' aria-hidden='true'></span>
+                    </button>
                 </div>
                 <div id="{{ item['id'] }}_content" class="collapse">
                     {{ print_real_item(item['children'], level+1, item['id']) }}
@@ -94,6 +97,9 @@
                         <span class="glyphicon glyphicon-film" aria-hidden="true">
                             <a href="#"><span id="{{ item['id'] }}_name">{{ item['name'] }}</span></a>
                         </span>
+                    </button>
+                    <button class='btn btn-link popoverIcon' onclick='deleteRealItem({{ item['id'] }}, {{ parent }})'>
+                        <span class='glyphicon glyphicon-remove iconSmall' aria-hidden='true'></span>
                     </button>
                 </div>
             {% endif %}

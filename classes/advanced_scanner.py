@@ -21,11 +21,20 @@ class Advanced_scanner:
         
         new_items = base_scanner.scan(paths)
 
+        # for new_item in new_items:
+        #     self.print_items(new_item)
+
         new_items_func = lambda x: self.result['new_items'].append(x)
         deleted_items_func = lambda x: self.result['deleted_items'].append(x)
 
         self.find_difference(old_items, new_items, new_items_func)
         self.find_difference(new_items, old_items, deleted_items_func)
+
+        # print 'new itemz'
+        # for it in self.result['new_items']:
+        #     self.print_items(it)
+
+
 
         for it in self.result['new_items']:
             self.add_items(it, 0, 0)
@@ -39,6 +48,11 @@ class Advanced_scanner:
 
         return self.result
 
+    def print_items(self, item):
+        print item.path
+        for child in item.children:
+            self.print_items(child)
+
     def find_difference(self, old_items, new_items, action):
         for i, new_item in enumerate(new_items):
             if not self.is_in_list(old_items, new_item.path):
@@ -47,7 +61,7 @@ class Advanced_scanner:
                 for j, new_item2 in enumerate(new_item.children):
                     if not self.is_in_list(old_items[i].children, new_item2.path):
                         action(new_item2)
-                    if new_item2.type is file_type['Folder'] and len(old_items) >= i and len(old_items[i].children) >= j and j != 0:
+                    if new_item2.type is file_type['Folder'] and len(old_items) >= i and (len(old_items[i].children) > 0 and len(old_items[i].children) > j):
                         self.find_difference(old_items[i].children[j].children, new_item2.children, action)
 
     def is_in_list(self, items, path):

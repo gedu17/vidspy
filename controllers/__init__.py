@@ -5,3 +5,4 @@ from item import item_blueprint
 from items import items_blueprint
 from template import template_blueprint
 from system_messages import system_messages_blueprint
+from real_item import real_item_blueprint
