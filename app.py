@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from jinja2 import Environment, PackageLoader
 from controllers import *
 from werkzeug.contrib.profiler import ProfilerMiddleware
+import MySQLdb
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://vidspy:vidspy@localhost/vidspy'
@@ -23,6 +24,7 @@ app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
 # Globals
 db = SQLAlchemy(app)
 env = Environment(loader=PackageLoader('app', 'views'))
+sqldb = MySQLdb.connect(host='localhost', user='vidspy', passwd='vidspy', db='vidspy')
 
 @app.before_request
 def init():
@@ -34,6 +36,7 @@ def init():
 	g._db = db.session
 	g._user = user
 	g._request = request
+	g._sqldb = sqldb
 
 	if user.logged_in is not True and not (request.path[0:8] == '/public/' or request.path[0:11] == '/item/view/'):
 		return login()
