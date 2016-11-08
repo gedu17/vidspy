@@ -73,7 +73,7 @@ def generate_real_items(item, path, parent, db, user_id, folders_only):
     from consts import file_type
 
     # real_items = db.query(Real_item).filter(Real_item.user_path_id == path).filter(Real_item.parent_id == parent) \
-    #     .filter(Real_item.type < 2).order_by(Real_item.parent_id).all()
+    #     .filter(Real_item.type < 2).order_by(Real_item.type).order_by(Real_item.name).all()
     # for real_item in real_items:
         # if not folders_only or (folders_only and real_item.type == file_type['Folder']):
         #     child_count = db.query(Real_item).filter(Real_item.user_path_id == path).filter(Real_item.parent_id == real_item.id).count()
@@ -83,7 +83,7 @@ def generate_real_items(item, path, parent, db, user_id, folders_only):
         #         generate_real_items(local_item, path, real_item.id, db, user_id, folders_only)
         #     item['children'].append(local_item)
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM real_items WHERE `user_path_id` = '%s' AND `parent_id` = '%d' AND `type` < %d ORDER BY `parent_id`" \
+    cursor.execute("SELECT * FROM real_items WHERE `user_path_id` = '%s' AND `parent_id` = '%d' AND `type` < %d  ORDER BY `type`, `name`" \
         % (path, parent, 2))
     for real_item in cursor.fetchall():
         if not folders_only or (folders_only and real_item[2] == file_type['Folder']):
