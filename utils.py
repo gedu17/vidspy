@@ -3,26 +3,6 @@ def generate_virtual_items(item, parent, db, user_id, viewed, deleted, folders_o
     from models import Virtual_item, Real_item
     from consts import file_type
 
-    # virtual_items = db.query(Virtual_item).filter(Virtual_item.user_id == user_id).filter(Virtual_item.parent_id == parent) \
-    #     .filter(Virtual_item.is_viewed == viewed).filter(Virtual_item.is_deleted == deleted).order_by(Virtual_item.type).order_by(Virtual_item.name).all()
-    
-    # for virtual_item in virtual_items:
-    #     if not folders_only or (folders_only and virtual_item.type == file_type['Folder']):
-    #         real_id = 0
-    #         real_path = ''
-    #         real_extension = ''
-    #         if virtual_item.real_item is not None:
-    #             real_id = virtual_item.real_item.id
-    #             real_path = virtual_item.real_item.path
-    #             real_extension = virtual_item.real_item.extension
-    #         child_count = db.query(Virtual_item).filter(Virtual_item.user_id == user_id).filter(Virtual_item.parent_id == virtual_item.id) \
-    #             .filter(Virtual_item.is_viewed == viewed).filter(Virtual_item.is_deleted == deleted).count()
-    #         local_item = {'name': virtual_item.name, 'children': [], 'id': virtual_item.id, 'real_id': real_id, 'last': False, 'type': virtual_item.type, 
-    #             'is_viewed': virtual_item.is_viewed, 'is_deleted': virtual_item.is_deleted, 'children_count': child_count, 
-    #             'extension': real_extension, 'path': real_path }
-    #         if virtual_item.type == file_type['Folder']:
-    #             generate_virtual_items(local_item, virtual_item.id, db, user_id, viewed, deleted, folders_only)
-    #         item['children'].append(local_item)
     cursor = db.cursor()
     stmt = "SELECT * FROM `virtual_items` WHERE `user_id` = '%d' AND `parent_id` = '%d' AND `is_viewed` = '%d' AND `is_deleted` = '%d' ORDER BY `type`, `name`"
     cursor.execute(stmt % (user_id, parent, viewed, deleted))
@@ -72,22 +52,11 @@ def generate_real_items(item, path, parent, db, user_id, folders_only):
     from models import Real_item
     from consts import file_type
 
-    # real_items = db.query(Real_item).filter(Real_item.user_path_id == path).filter(Real_item.parent_id == parent) \
-    #     .filter(Real_item.type < 2).order_by(Real_item.type).order_by(Real_item.name).all()
-    # for real_item in real_items:
-        # if not folders_only or (folders_only and real_item.type == file_type['Folder']):
-        #     child_count = db.query(Real_item).filter(Real_item.user_path_id == path).filter(Real_item.parent_id == real_item.id).count()
-        #     local_item = {'name': real_item.name, 'children': [], 'id': real_item.id, 'last': False, 'type': real_item.type, 
-        #         'is_viewed': 0, 'is_deleted': 0, 'children_count': child_count, 'extension': real_item.extension }
-        #     if real_item.type == file_type['Folder']:
-        #         generate_real_items(local_item, path, real_item.id, db, user_id, folders_only)
-        #     item['children'].append(local_item)
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM real_items WHERE `user_path_id` = '%s' AND `parent_id` = '%d' AND `type` < %d  ORDER BY `type`, `name`" \
-        % (path, parent, 2))
+    stmt = "SELECT * FROM real_items WHERE `user_path_id` = '%s' AND `parent_id` = '%d' AND `type` < %d  ORDER BY `type`, `name`"
+    cursor.execute(stmt % (path, parent, 2))
     for real_item in cursor.fetchall():
         if not folders_only or (folders_only and real_item[2] == file_type['Folder']):
-            # child_count = db.query(Real_item).filter(Real_item.user_path_id == path).filter(Real_item.parent_id == real_item.id).count()
             cursor.execute("SELECT COUNT(*) FROM real_items WHERE `user_path_id` = '%s' AND `parent_id` = '%d'" % (path, real_item[0]))
             child_count = cursor.fetchone()[0]
             local_item = {'name': real_item[4], 'children': [], 'id': real_item[0], 'last': False, 'type': real_item[2], 
