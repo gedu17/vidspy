@@ -7,7 +7,7 @@ def move(id):
     from models import Virtual_item
     from utils import get_virtual_items
     template = g._env.get_template('templates/move.html')
-    item = get_virtual_items(g._user.id, g._db, 0, 0, True)
+    item = get_virtual_items(g._user.id, g._sqldb, 0, 0, True)
     
     virtual_item = g._db.query(Virtual_item).filter(Virtual_item.id == id).first()
     if virtual_item is not None:
@@ -29,7 +29,7 @@ def edit(id):
 def create():
     from utils import get_virtual_items
     template = g._env.get_template('templates/create.html')
-    item = get_virtual_items(g._user.id, g._db, 0, 0, True)
+    item = get_virtual_items(g._user.id, g._sqldb, 0, 0, True)
 
     return template.render(items=item['children'])
 
@@ -37,7 +37,7 @@ def create():
 def virtual_items():
     from utils import get_virtual_items
 
-    item = get_virtual_items(g._user.id, g._db)
+    item = get_virtual_items(g._user.id, g._sqldb)
     
     template = g._env.get_template('common/virtual_items.html')
     return template.render(user=g._user, item=item['children'], count=len(item['children']))
@@ -46,7 +46,7 @@ def virtual_items():
 def viewed_items():
     from utils import get_virtual_items
 
-    item = get_virtual_items(g._user.id, g._db, 1, 0)
+    item = get_virtual_items(g._user.id, g._sqldb, 1, 0)
     template = g._env.get_template('common/viewed_items.html')
     return template.render(user=g._user, item=item['children'], count=len(item['children']))
 
@@ -54,7 +54,7 @@ def viewed_items():
 def deleted_items():
     from utils import get_virtual_items
 
-    item = get_virtual_items(g._user.id, g._db, 0, 1)
+    item = get_virtual_items(g._user.id, g._sqldb, 0, 1)
     template = g._env.get_template('common/deleted_items.html')
     return template.render(user=g._user, item=item['children'], count=len(item['children']))
 
