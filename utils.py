@@ -1,6 +1,5 @@
 
 def generate_virtual_items(item, parent, db, user_id, viewed, deleted, folders_only):
-    from models import Virtual_item, Real_item
     from consts import file_type
 
     cursor = db.cursor()
@@ -34,14 +33,12 @@ def generate_virtual_items(item, parent, db, user_id, viewed, deleted, folders_o
         item['children'][len(item['children'])-1]['last'] = True
 
 def get_virtual_items(user_id, db, viewed=0, deleted=0, folders_only=False):
-    from models import User_setting
     
     item = {'name': 'base', 'children': [], 'id': 0, 'last': False, 'type': 0, 'is_viewed': 0, 'is_deleted': 0, 'extension': '' }
     generate_virtual_items(item, 0, db, user_id, viewed, deleted, folders_only)
     return item
 
 def get_real_items(user_id, db, paths, folders_only=False):
-    from models import User_setting
     
     item = {'name': 'base', 'children': [], 'id': 0, 'last': False, 'type': 0, 'is_viewed': 0, 'is_deleted': 0, 'extension': '' }
     for path in paths:
@@ -49,7 +46,6 @@ def get_real_items(user_id, db, paths, folders_only=False):
     return item
 
 def generate_real_items(item, path, parent, db, user_id, folders_only):
-    from models import Real_item
     from consts import file_type
 
     cursor = db.cursor()
