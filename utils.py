@@ -32,14 +32,14 @@ def generate_virtual_items(item, parent, db, user_id, viewed, deleted, folders_o
             real_id = 0
             real_path = ''
             real_extension = ''
-            cursor.execute("SELECT path, extension FROM `real_items` WHERE `id` = '%d' LIMIT 1" % (virtual_item[2]))
-            real_item = cursor.fetchone()
-            if real_item is not None:                
+            if virtual_item[2] is not None:
+                cursor.execute("SELECT path, extension FROM `real_items` WHERE `id` = '%d' LIMIT 1" % (virtual_item[2]))
+                real_item = cursor.fetchone()
+                               
                 real_id = virtual_item[2]
                 real_path = real_item[0]
                 real_extension = real_item[1]
-            # child_count = db.query(Virtual_item).filter(Virtual_item.user_id == user_id).filter(Virtual_item.parent_id == virtual_item.id) \
-            #     .filter(Virtual_item.is_viewed == viewed).filter(Virtual_item.is_deleted == deleted).count()
+            
             stmt = "SELECT COUNT(*) FROM `virtual_items` WHERE `user_id` = '%d' AND `parent_id` = '%d' AND `is_viewed` = '%d' AND `is_deleted` = '%d'"
             cursor.execute(stmt % (user_id, virtual_item[0], viewed, deleted))
             child_count = cursor.fetchone()[0]
