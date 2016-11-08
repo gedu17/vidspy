@@ -8,7 +8,6 @@ import MySQLdb
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://vidspy:vidspy@localhost/vidspy'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config['DEBUG'] = True
 app.secret_key = 'bRbNHJf9cHe3T8XQqpW2R3Ya'
 app.register_blueprint(settings_blueprint)
 app.register_blueprint(account_blueprint)
@@ -18,9 +17,6 @@ app.register_blueprint(items_blueprint)
 app.register_blueprint(template_blueprint)
 app.register_blueprint(system_messages_blueprint)
 app.register_blueprint(real_item_blueprint)
-
-app.config['PROFILE'] = True
-app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
 
 # Globals
 db = SQLAlchemy(app)
@@ -72,18 +68,5 @@ def logout():
 def send_static(path):
 	return send_from_directory('public', path)
 
-@app.route("/test")
-def testas():
-    from flask import Response
-
-    resp_text = 'cia yra mano testas'
-    response = Response('OK')
-    response.status_code = 200
-    response.content_length = len(resp_text)
-    response.content_type = 'text/html'
-    response.data = bytearray(resp_text)
-
-    return response
-
 if __name__ == "__main__":
-	app.run(debug=True)
+	app.run()
