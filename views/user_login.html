@@ -1,0 +1,24 @@
+{% extends 'common/layout.html' %}
+{% block body %}
+<form action="" method="post" >
+<div class="container-fluid col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-2 loginBox">
+        <div class="panel panel-default">
+            <div class="panel-heading">Log in</div>
+            <div class="panel-body">
+                {% if error|length > 0 %}
+                    <div class="alert alert-danger" role="alert">{{ error }}</div>
+                {% endif %}
+                <fieldset class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" class="form-control" placeholder="Username" />
+                </fieldset>
+                <fieldset class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Password" />
+                </fieldset>
+                <button type="submit" class="btn btn-primary">Log in</button>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

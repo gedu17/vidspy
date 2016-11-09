@@ -1,4 +1,4 @@
-from flask import Blueprint, g
+from flask import Blueprint, g, redirect
 
 account_blueprint = Blueprint('account_blueprint', __name__)
 
@@ -12,7 +12,7 @@ def create():
     users = g._db.query(User).filter(User.name == user).first()
 
     if users is None:
-        new_user = User(name=user, password=password, level=level, active=1)
+        new_user = User(name=user, password=generate_password(password), level=level, active=1)
         g._db.add(new_user)
         g._db.commit()
         return 'OK'
@@ -95,17 +95,61 @@ def change_pasword():
     
     user = g._db.query(User).filter(User.id == g._user.id).first()
 
-    if user is None or not verify_password(user, old_password):
+    if user is None or not verify_password(old_password, user.password):
         return 'Bad Request', 400
 
     user.password = generate_password(new_password)
     g._db.commit()
     return 'OK'
 
-def verify_password(user, old_password):
-    from models import User
-    
-    return user.password == old_password
+@account_blueprint.route('/account/login', methods=['GET', 'POST'])
+def login():
+    from models.user import User
+    from consts import login_methods, login_method
+	
+    if g._user.logged_in:
+		return redirect('/')
 
-def generate_password(new_password):
-    return new_password
+    if g._request.method == 'GET':
+        if login_method == login_methods['Plain']:
+            template = g._env.get_template('user_list.html')
+            users = g._db.query(User).all()
+            return template.render(users=users, user=g._user, page_title='Select user')
+        else:
+            template = g._env.get_template('user_login.html')
+            return template.render(error='', user=g._user, page_title='Log in')
+
+    elif g._request.method == 'POST':
+        if login_method == login_methods['Plain']:
+            id = g._request.json['id']
+            user = g._db.query(User).filter(User.id == id).first()
+            if user is not None:
+                g._session['user_id'] = id
+                return 'OK'
+        else:
+            username = g._request.form['username']
+            password = g._request.form['password']
+            user = g._db.query(User).filter(User.name == username).first()
+            if user is not None and verify_password(password, user.password):
+                g._session['user_id'] = user.id
+                return redirect('/')
+            template = g._env.get_template('user_login.html')
+            return template.render(error='Bad login info.', user=g._user, page_title='Log in')
+
+
+	return 'Bad Request', 400
+
+@account_blueprint.route('/account/logout', methods=['GET'])
+def logout():
+	g._session.clear()
+	return redirect('/account/login')
+
+def verify_password(password, hash):
+    from passlib.hash import pbkdf2_sha256
+    
+    return pbkdf2_sha256.verify(password, hash)
+
+def generate_password(password):
+    from passlib.hash import pbkdf2_sha256
+
+    return pbkdf2_sha256.encrypt(password, rounds=20000, salt_size=16)

@@ -33,36 +33,22 @@ def init():
 	g._db = db.session
 	g._user = user
 	g._request = request
+	g._session = session
 	g._sqldb = sqldb
 
-	if user.logged_in is not True and not (request.path[0:8] == '/public/' or request.path[0:11] == '/item/view/'):
-		return login()
-	
+	if user.logged_in is not True and not is_unauthenticated_route():
+		return redirect('/account/login')
 
+def is_unauthenticated_route():
+	if request.path[0:8] == '/public/':
+		return True
+	elif request.path[0:11] == '/item/view/':
+		return True
+	elif request.path[0:14] == '/account/login':
+		return True
+	else:
+		return False
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-	from models.user import User
-
-	if g._user.logged_in:
-		return redirect('/')
-
-	if request.method == 'GET':
-		template = env.get_template('user_list.html')
-		users = db.session.query(User).all()
-		return template.render(users=users, user=g._user, page_title='Select user')
-	elif request.method == 'POST':
-		id = request.json['id']
-		user = db.session.query(User).filter(User.id == id).first()
-		if user is not None:
-			session['user_id'] = id
-			return 'OK'
-	return 'Bad Request', 400
-
-@app.route('/logout', methods=['GET'])
-def logout():
-	session.clear()
-	return redirect('/login')
 
 @app.route("/public/<path:path>")
 def send_static(path):

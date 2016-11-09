@@ -41,5 +41,5 @@ function logIn(id) {
             location.reload();
         }
     };
-    sendQuery("/login", {id: id}, "POST", cb);
+    sendQuery("/account/login", {id: id}, "POST", cb);
 }
