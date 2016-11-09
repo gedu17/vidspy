@@ -5,7 +5,7 @@
     {% for path in paths %}
         <li role="presentation" {% if loop.index == 1 -%} class="active" {%- endif %}>
             <a href="#path_{{ path['id'] }}" aria-controls="path_{{ path['id'] }}" role="tab" data-toggle="tab">
-                {{ path['value'] }} <span class="pull-xs-right label-pill label-default label">{{ path['count'] }} </span>
+                {{ path['value'] }} <span id="base_{{ path['id'] }}_count" class="pull-xs-right label-pill label-default label">{{ path['count'] }} </span>
             </a>
         </li>
     {% endfor %}
@@ -15,7 +15,7 @@
         {% for path in paths %}
             <div role="tabpanel" class="tab-pane {% if loop.index == 1 -%} active {%- endif %}" id="path_{{ path['id'] }}" style="padding-top: 15px;">
                 <div class="list-group">
-                    {{ print_real_item(item, 0, 0) }}
+                    {{ print_real_item(item, 0, 'base_%d' % path['id'] ) }}
                 </div>
             </div>
         {% endfor %}

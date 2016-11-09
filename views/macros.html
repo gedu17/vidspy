@@ -84,8 +84,8 @@
                     </span>
                     {% endif %}
                     <span class="label label-default label-pill pull-xs-right" id="{{ item['id'] }}_count">{{ item['children_count'] }}</span> 
-                    <button class='btn btn-link popoverIcon' onclick='deleteRealItem({{ item['id'] }}, {{ parent }})'>
-                        <span class='glyphicon glyphicon-remove iconSmall' aria-hidden='true'></span>
+                    <button class="btn btn-link popoverIcon" onclick="deleteRealItem({{ item['id'] }}, '{{ parent }}')">
+                        <span class="glyphicon glyphicon-remove iconSmall" aria-hidden="true"></span>
                     </button>
                 </div>
                 <div id="{{ item['id'] }}_content" class="collapse">
@@ -98,8 +98,8 @@
                             <a href="#"><span id="{{ item['id'] }}_name">{{ item['name'] }}</span></a>
                         </span>
                     </button>
-                    <button class='btn btn-link popoverIcon' onclick='deleteRealItem({{ item['id'] }}, {{ parent }})'>
-                        <span class='glyphicon glyphicon-remove iconSmall' aria-hidden='true'></span>
+                    <button class="btn btn-link popoverIcon" onclick="deleteRealItem({{ item['id'] }}, '{{ parent }}')">
+                        <span class="glyphicon glyphicon-remove iconSmall" aria-hidden="true"></span>
                     </button>
                 </div>
             {% endif %}
