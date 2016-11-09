@@ -21,13 +21,13 @@ app.register_blueprint(real_item_blueprint)
 # Globals
 db = SQLAlchemy(app)
 env = Environment(loader=PackageLoader('app', 'views'))
-sqldb = MySQLdb.connect(host='localhost', user='vidspy', passwd='vidspy', db='vidspy')
 
 @app.before_request
 def init():
 	from consts import severity
 	from classes.user import User
 	user = User(request, session, db)
+	sqldb = MySQLdb.connect(host='localhost', user='vidspy', passwd='vidspy', db='vidspy')
 
 	g._env = env
 	g._db = db.session
