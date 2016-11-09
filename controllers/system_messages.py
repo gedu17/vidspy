@@ -18,7 +18,8 @@ def index():
         
     g._db.commit()
     template = g._env.get_template('system_messages.html')
-    return template.render(user=g._user, count=len(messages), messages=unmodified, severities=severities, date_converter=datetime.fromtimestamp, listing_type=1)
+    return template.render(user=g._user, count=len(messages), messages=unmodified, severities=severities, date_converter=datetime.fromtimestamp,
+           listing_type=1, page_title='System messages')
 
 @system_messages_blueprint.route("/system_messages/", methods=['COUNT'])
 def total_count():

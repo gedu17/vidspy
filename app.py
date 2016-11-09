@@ -50,7 +50,7 @@ def login():
 	if request.method == 'GET':
 		template = env.get_template('user_list.html')
 		users = db.session.query(User).all()
-		return template.render(users=users, user=g._user)
+		return template.render(users=users, user=g._user, page_title='Select user')
 	elif request.method == 'POST':
 		id = request.json['id']
 		user = db.session.query(User).filter(User.id == id).first()

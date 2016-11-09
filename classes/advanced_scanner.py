@@ -211,7 +211,7 @@ class Advanced_scanner:
                 int(time()), self.generate_result(self.result['new_items'], 'New items'))
             self.db.add(msg)
         if self.result['deleted_items_count'] > 0:
-            msg = System_message(self.user.id, ('%d items removed.' % self.result['new_items_count']), 0, 1, 
+            msg = System_message(self.user.id, ('%d items removed.' % self.result['deleted_items_count']), 0, 1, 
                 int(time()), self.generate_result(self.result['deleted_items'], 'Removed items'))
             self.db.add(msg)
 

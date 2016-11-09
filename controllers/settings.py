@@ -23,7 +23,7 @@ def index():
     folders = scanner.scan({1: homedir})
     
     return template.render(user=g._user, users=users, folders=folders, 
-            dir_separator=sep, selected_folders=selected_folders, uuid=uuid4, base_name=basename)
+           dir_separator=sep, selected_folders=selected_folders, uuid=uuid4, base_name=basename, page_title='Settings')
 
 @settings_blueprint.route("/settings/user_paths", methods=['POST'])
 def user_paths():
