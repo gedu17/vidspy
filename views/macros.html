@@ -42,11 +42,11 @@
 {% endmacro %}
 
 {% macro generate_buttons(item, parent_id) %}
-    {% if item['is_viewed'] == 1 %}
+    {% if item['viewed'] == 1 %}
         <button class='btn btn-link popoverIcon' onclick='unviewedItem({{ item['id'] }}, {{ parent_id }})'>
             <span class='glyphicon glyphicon-eye-close iconSmall' aria-hidden='true'></span>
         </button>
-    {% elif item['is_deleted'] == 1 %}
+    {% elif item['deleted'] == 1 %}
         <button class='btn btn-link popoverIcon' onclick='undeleteItem({{ item['id'] }}, {{ parent_id }})'>
             <span class='glyphicon glyphicon-ok iconSmall' aria-hidden='true'></span>
         </button>

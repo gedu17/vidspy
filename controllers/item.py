@@ -57,7 +57,7 @@ def delete(id):
 
     item = g._db.query(Virtual_item).filter(Virtual_item.id == id).filter(Virtual_item.user_id == g._user.id).first()
     if item is not None:
-        item.is_deleted = 1
+        item.deleted = 1
         item.deleted_time = int(time()) 
         msg = System_message(g._user.id, ('Item %s succesfully flagged as deleted.' % (item.name)), severities['Info'])
         g._db.add(msg)
@@ -73,7 +73,7 @@ def undelete(id):
 
     item = g._db.query(Virtual_item).filter(Virtual_item.id == id).filter(Virtual_item.user_id == g._user.id).first()
     if item is not None:
-        item.is_deleted = 0
+        item.deleted = 0
         item.deleted_time = int(time())
         msg = System_message(g._user.id, ('Item %s succesfully flagged as not deleted.' % (item.name)), severities['Info'])
         g._db.add(msg)
@@ -89,7 +89,7 @@ def viewed(id):
 
     item = g._db.query(Virtual_item).filter(Virtual_item.id == id).filter(Virtual_item.user_id == g._user.id).first()
     if item is not None:
-        item.is_viewed = 1
+        item.viewed = 1
         item.viewed_time = int(time()) 
         msg = System_message(g._user.id, ('Item %s succesfully flagged as viewed.' % (item.name)), severities['Info'])
         g._db.add(msg)
@@ -105,7 +105,7 @@ def unviewed(id):
 
     item = g._db.query(Virtual_item).filter(Virtual_item.id == id).filter(Virtual_item.user_id == g._user.id).first()
     if item is not None:
-        item.is_viewed = 0
+        item.viewed = 0
         item.viewed_time = int(time())
         msg = System_message(g._user.id, ('Item %s succesfully flagged as not viewed.' % (item.name)), severities['Info'])
         g._db.add(msg)

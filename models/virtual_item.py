@@ -7,8 +7,8 @@ class Virtual_item(db.Model):
     real_item_id = db.Column(db.Integer, db.ForeignKey('real_items.id'), nullable=True)
     parent_id = db.Column(db.Integer)
     name = db.Column(db.Text)
-    is_viewed = db.Column(db.Integer)
-    is_deleted = db.Column(db.Integer)
+    viewed = db.Column(db.Integer)
+    deleted = db.Column(db.Integer)
     viewed_time = db.Column(db.Integer)
     deleted_time = db.Column(db.Integer)
     type = db.Column(db.Integer)
@@ -22,8 +22,8 @@ class Virtual_item(db.Model):
         self.parent_id = parent_id
         self.name = name
         self.type = type
-        self.is_viewed = 0
-        self.is_deleted = 0
+        self.viewed = 0
+        self.deleted = 0
         self.viewed_time = 0
         self.deleted_time = 0
 

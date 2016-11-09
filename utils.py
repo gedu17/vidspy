@@ -3,7 +3,7 @@ def generate_virtual_items(item, parent, db, user_id, viewed, deleted, folders_o
     from consts import file_type
 
     cursor = db.cursor()
-    stmt = "SELECT * FROM `virtual_items` WHERE `user_id` = '%d' AND `parent_id` = '%d' AND `is_viewed` = '%d' AND `is_deleted` = '%d' ORDER BY `type`, `name`"
+    stmt = "SELECT * FROM `virtual_items` WHERE `user_id` = '%d' AND `parent_id` = '%d' AND `viewed` = '%d' AND `deleted` = '%d' ORDER BY `type`, `name`"
     cursor.execute(stmt % (user_id, parent, viewed, deleted))
     
     for virtual_item in cursor.fetchall():
@@ -19,11 +19,11 @@ def generate_virtual_items(item, parent, db, user_id, viewed, deleted, folders_o
                 real_path = real_item[0]
                 real_extension = real_item[1]
             
-            stmt = "SELECT COUNT(*) FROM `virtual_items` WHERE `user_id` = '%d' AND `parent_id` = '%d' AND `is_viewed` = '%d' AND `is_deleted` = '%d'"
+            stmt = "SELECT COUNT(*) FROM `virtual_items` WHERE `user_id` = '%d' AND `parent_id` = '%d' AND `viewed` = '%d' AND `deleted` = '%d'"
             cursor.execute(stmt % (user_id, virtual_item[0], viewed, deleted))
             child_count = cursor.fetchone()[0]
             local_item = {'name': virtual_item[4], 'children': [], 'id': virtual_item[0], 'real_id': real_id, 'last': False, 'type': virtual_item[9], 
-                'is_viewed': virtual_item[5], 'is_deleted': virtual_item[6], 'children_count': child_count, 
+                'viewed': virtual_item[5], 'deleted': virtual_item[6], 'children_count': child_count, 
                 'extension': real_extension, 'path': real_path }
             if virtual_item[9] == file_type['Folder']:
                 generate_virtual_items(local_item, virtual_item[0], db, user_id, viewed, deleted, folders_only)
@@ -34,13 +34,13 @@ def generate_virtual_items(item, parent, db, user_id, viewed, deleted, folders_o
 
 def get_virtual_items(user_id, db, viewed=0, deleted=0, folders_only=False):
     
-    item = {'name': 'base', 'children': [], 'id': 0, 'last': False, 'type': 0, 'is_viewed': 0, 'is_deleted': 0, 'extension': '' }
+    item = {'name': 'base', 'children': [], 'id': 0, 'last': False, 'type': 0, 'viewed': 0, 'deleted': 0, 'extension': '' }
     generate_virtual_items(item, 0, db, user_id, viewed, deleted, folders_only)
     return item
 
 def get_real_items(user_id, db, paths, folders_only=False):
     
-    item = {'name': 'base', 'children': [], 'id': 0, 'last': False, 'type': 0, 'is_viewed': 0, 'is_deleted': 0, 'extension': '' }
+    item = {'name': 'base', 'children': [], 'id': 0, 'last': False, 'type': 0, 'viewed': 0, 'deleted': 0, 'extension': '' }
     for path in paths:
         generate_real_items(item, path['id'], 0, db, user_id, folders_only)
     return item
@@ -56,7 +56,7 @@ def generate_real_items(item, path, parent, db, user_id, folders_only):
             cursor.execute("SELECT COUNT(*) FROM real_items WHERE `user_path_id` = '%s' AND `parent_id` = '%d'" % (path, real_item[0]))
             child_count = cursor.fetchone()[0]
             local_item = {'name': real_item[4], 'children': [], 'id': real_item[0], 'last': False, 'type': real_item[2], 
-                'is_viewed': 0, 'is_deleted': 0, 'children_count': child_count, 'extension': real_item[6] }
+                'viewed': 0, 'deleted': 0, 'children_count': child_count, 'extension': real_item[6] }
             if real_item[2] == file_type['Folder']:
                 generate_real_items(local_item, path, real_item[0], db, user_id, folders_only)
             item['children'].append(local_item)
