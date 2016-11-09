@@ -61,23 +61,23 @@ def deleted_items():
 @template_blueprint.route('/template/important_system_messages')
 def important_messages():
     from models import System_message
-    from consts import severities, severity
+    from consts import severities_list, severity
     from datetime import datetime
 
     messages = g._db.query(System_message).filter(System_message.user_id == g._user.id).filter(System_message.severity >= severity) \
         .order_by(System_message.timestamp.desc()).all()
     template = g._env.get_template('common/system_messages_list.html')
-    return template.render(user=g._user, count=len(messages), messages=messages, severities=severities, date_converter=datetime.fromtimestamp, listing_type=1)
+    return template.render(user=g._user, count=len(messages), messages=messages, severities=severities_list, date_converter=datetime.fromtimestamp, listing_type=1)
 
 @template_blueprint.route('/template/all_system_messages')
 def all_messages():
     from models import System_message
-    from consts import severities
+    from consts import severities_list
     from datetime import datetime
 
     messages = g._db.query(System_message).filter(System_message.user_id == g._user.id).order_by(System_message.timestamp.desc()).all()
     template = g._env.get_template('common/system_messages_list.html')
-    return template.render(user=g._user, count=len(messages), messages=messages, severities=severities, date_converter=datetime.fromtimestamp, listing_type=2)
+    return template.render(user=g._user, count=len(messages), messages=messages, severities=severities_list, date_converter=datetime.fromtimestamp, listing_type=2)
 
 @template_blueprint.route('/template/smbadge/<int:count>')
 def smbadge(count):

@@ -33,7 +33,7 @@
                     <tr class="{{ severities[message.severity] }}" id="{{ message.id }}_tr">
                         <td class="text-center verticalMiddle"><strong>{{ loop.index }}</strong></td>
                         <td class="text-left col-md-8 verticalMiddle">
-                                <a href="#" class="btn btn-link" {% if message.long_message|length > 0 -%} onclick="openMessage({{ message.id }});" {%- endif %}>
+                                <a href="#" class="btn btn-link" {% if message.long_message != None -%} onclick="openMessage({{ message.id }});" {%- endif %}>
                                     {% if message.read == 0 -%} <i class="glyphicon glyphicon-exclamation-sign" id="{{ message.id }}_icon"></i> {%- endif %}
                                     {{ message.message }}</a>
                         </td>
