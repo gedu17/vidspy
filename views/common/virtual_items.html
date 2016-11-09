@@ -1,5 +1,5 @@
 {% from "macros.html" import print_item %}
-<div class="list-group">
+<div id="itemList" class="list-group">
     <div class="list-group-item" style="background: #D8D8D8">
         <div class="pull-left myPadding">
             <h5 aria-hidden="true" class="glyphicon-folder-close glyphicon" id="0_name"></h5>
@@ -26,8 +26,11 @@
     </div>
     {% if count > 0 %}
         {{  print_item(item, 0, 0, True)  }}
+        <div id="noItems" class="panel-body" style="display:none;">
+            <div class="alert alert-info">No items.</div>
+        </div>
     {% else %}
-        <div class="panel-body">
+        <div id="noItems" class="panel-body">
             <div class="alert alert-info">No items.</div>
         </div>
     {% endif %}

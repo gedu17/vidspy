@@ -24,6 +24,10 @@ function setShow(id) {
     $("#" + id).removeClass("hide");
 }
 
+function removeItem(id) {
+    $("#" + id).remove();
+}
+
 function sendQuery(url, data, method, callback) {
     $.ajax({
         url: url,
@@ -88,4 +92,11 @@ function GetLoadingIcon(size) {
 
     return "<div class=\"loadingCenter\" style=\"font-size: " + size + "px;\"><span class=\"glyphicon glyphicon-refresh glyphicon-refresh-animate\"></span></div>";
 
+}
+
+function checkIfEmptyList() {
+    console.log("Item count is " + $("#itemList").children().length);
+    if($("#itemList").children().length === 2) {
+        $("#noItems").css("display", "block");
+    }
 }

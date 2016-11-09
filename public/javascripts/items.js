@@ -95,9 +95,10 @@ function deleteItem(id, parent) {
 function unviewedItem(id, parent) {
     var cb = function (xhr) {
         if (xhr.status === 200) {
-            setHide(id + "_div");
-            setHide(id + "_content");
+            removeItem(id + "_div");
+            removeItem(id + "_content");
             decreaseParentCount(parent);
+            checkIfEmptyList();
         }
     };
     sendQuery("/item/unviewed/" + id, undefined, "PUT", cb);
@@ -106,9 +107,10 @@ function unviewedItem(id, parent) {
 function undeleteItem(id, parent) {
     var cb = function (xhr) {
         if (xhr.status === 200) {
-            setHide(id + "_div");
-            setHide(id + "_content");
+            removeItem(id + "_div");
+            removeItem(id + "_content");
             decreaseParentCount(parent);
+            checkIfEmptyList();
         }
     };
     sendQuery("/item/undelete/" + id, undefined, "PUT", cb);
