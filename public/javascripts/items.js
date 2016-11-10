@@ -73,9 +73,10 @@ function createFolder() {
 function viewedItem(id, parent) {
     var cb = function (xhr) {
         if (xhr.status === 200) {
-            setHide(id + "_div");
-            setHide(id + "_content");
+            removeItem(id + "_div");
+            removeItem(id + "_content");
             decreaseParentCount(parent);
+            checkIfEmptyList();
         }
     };
     sendQuery("/item/viewed/" + id, undefined, "PUT", cb);
@@ -84,9 +85,10 @@ function viewedItem(id, parent) {
 function deleteItem(id, parent) {
     var cb = function (xhr) {
         if (xhr.status === 200) {
-            setHide(id + "_div");
-            setHide(id + "_content");
+            removeItem(id + "_div");
+            removeItem(id + "_content");
             decreaseParentCount(parent);
+            checkIfEmptyList();
         }
     };
     sendQuery("/item/delete/" + id, undefined, "DELETE", cb);

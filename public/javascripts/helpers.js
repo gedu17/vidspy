@@ -95,8 +95,7 @@ function GetLoadingIcon(size) {
 }
 
 function checkIfEmptyList() {
-    console.log("Item count is " + $("#itemList").children().length);
     if($("#itemList").children().length === 2) {
-        $("#noItems").css("display", "block");
+        changeVirtualView();
     }
 }
