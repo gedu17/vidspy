@@ -1,5 +1,5 @@
 
-def generate_virtual_items(item, parent, db, user_id, viewed, deleted, folders_only):
+def generate_virtual_items(item, parent, db, user_id, viewed, deleted, always_traverse, folders_only):
     from consts import file_type
 
     cursor = db.cursor()
@@ -28,19 +28,19 @@ def generate_virtual_items(item, parent, db, user_id, viewed, deleted, folders_o
                     'viewed': virtual_item[5], 'deleted': virtual_item[6], 'children_count': child_count, 
                     'extension': real_extension, 'path': real_path }
                 if virtual_item[9] == file_type['Folder']:
-                    generate_virtual_items(local_item, virtual_item[0], db, user_id, viewed, deleted, folders_only)
+                    generate_virtual_items(local_item, virtual_item[0], db, user_id, viewed, deleted, always_traverse, folders_only)
                 item['children'].append(local_item)
-            elif virtual_item[9] == file_type['Folder']:
-                generate_virtual_items(item, virtual_item[0], db, user_id, viewed, deleted, folders_only)
+            elif virtual_item[9] == file_type['Folder'] and always_traverse:
+                generate_virtual_items(item, virtual_item[0], db, user_id, viewed, deleted, always_traverse, folders_only)
             
     
     if len(item['children']) > 0 and parent != 0:
         item['children'][len(item['children'])-1]['last'] = True
 
-def get_virtual_items(user_id, db, viewed=0, deleted=0, folders_only=False):
+def get_virtual_items(user_id, db, viewed=0, deleted=0, always_traverse=False, folders_only=False):
     
     item = {'name': 'base', 'children': [], 'id': 0, 'last': False, 'type': 0, 'viewed': 0, 'deleted': 0, 'extension': '' }
-    generate_virtual_items(item, 0, db, user_id, viewed, deleted, folders_only)
+    generate_virtual_items(item, 0, db, user_id, viewed, deleted, always_traverse, folders_only)
     return item
 
 def get_real_items(user_id, db, paths, folders_only=False):

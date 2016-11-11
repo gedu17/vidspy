@@ -95,7 +95,7 @@ function GetLoadingIcon(size) {
 }
 
 function checkIfEmptyList() {
-    if($("#itemList").children().length === 2) {
+    if($("#itemList").children().length === 1) {
         changeVirtualView();
     }
 }
