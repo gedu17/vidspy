@@ -4,6 +4,9 @@ from jinja2 import Environment, PackageLoader
 from controllers import *
 from werkzeug.contrib.profiler import ProfilerMiddleware
 import MySQLdb
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://vidspy:vidspy@localhost/vidspy'
