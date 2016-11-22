@@ -9,11 +9,13 @@ def index():
     from consts import severity, severities_list
     from datetime import datetime
 
-    messages = g._db.query(System_message).filter(System_message.user_id == g._user.id).all()
+    messages = g._db.query(System_message).filter(System_message.user_id == g._user.id).order_by(System_message.timestamp.desc()).all()
     unmodified = []
     for message in messages:
         if message.severity >= severity:
-            unmodified.append(System_message(message.user_id, message.message, message.read, message.severity, message.timestamp, message.long_message, message.id))
+            item = System_message(message.user_id, message.message, message.severity, message.timestamp, message.long_message, message.id)
+            item.read = message.read
+            unmodified.append(item)
         message.read = 1
         
     g._db.commit()
