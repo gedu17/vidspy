@@ -28,7 +28,7 @@ def total_count():
     from models import System_message
     from consts import severity 
 
-    total_count = g._db.query(System_message).filter(System_message.user_id == g._user.id).filter(System_message.severity >= severity).count()
+    total_count = g._db.query(System_message).filter(System_message.user_id == g._user.id).filter(System_message.severity >= severity).filter(System_message.read == 0).count()
     return str(total_count)
 
 
