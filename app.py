@@ -3,8 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from jinja2 import Environment, PackageLoader
 from controllers import *
 from werkzeug.contrib.profiler import ProfilerMiddleware
-import MySQLdb
-import sys
+import MySQLdb, sys
+from datetime import timedelta
+
 reload(sys)
 sys.setdefaultencoding('utf8')
 
@@ -27,6 +28,8 @@ env = Environment(loader=PackageLoader('app', 'views'))
 
 @app.before_request
 def init():
+	session.permanent = True
+	app.permanent_session_lifetime = timedelta(days=365)
 	from consts import severity
 	from classes.user import User
 	user = User(request, session, db)
